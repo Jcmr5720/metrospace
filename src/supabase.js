@@ -3,15 +3,28 @@ const API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsIn
 
 export async function api(path, options = {}) {
   options.headers = options.headers || {};
+  options.method = options.method || 'GET';
   options.headers['apikey'] = API_KEY;
   options.headers['Authorization'] = `Bearer ${API_KEY}`;
-  options.headers['Content-Type'] = 'application/json';
+  if (options.method !== 'GET') {
+    options.headers['Content-Type'] = 'application/json';
+    // Ask Supabase to return the inserted row so we can parse the response
+    options.headers['Prefer'] =
+      options.headers['Prefer'] || 'return=representation';
+  }
+
   const res = await fetch(`${API_URL}${path}`, options);
   if (!res.ok) {
     const text = await res.text();
     throw new Error(text || res.statusText);
   }
-  return res.json();
+  // Some endpoints might not return JSON (e.g. INSERT without return
+  // preference). Guard against empty bodies before parsing.
+  const type = res.headers.get('content-type') || '';
+  if (type.includes('application/json')) {
+    return res.json();
+  }
+  return undefined;
 }
 
 export async function hashPassword(password) {
