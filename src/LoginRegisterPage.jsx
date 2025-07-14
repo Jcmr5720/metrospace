@@ -11,24 +11,40 @@ export default function LoginRegisterPage() {
   const navigate = useNavigate()
 
   const handleLogin = async () => {
+    if (!email.trim() || !password) {
+      setMessage('Please enter both email and password')
+      return
+    }
     setLoading(true)
     setMessage('')
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password })
     setLoading(false)
     if (error) {
-      setMessage(error.message)
+      if (error.status === 400) {
+        setMessage('Invalid login credentials')
+      } else {
+        setMessage(error.message)
+      }
     } else {
       navigate('/dashboard')
     }
   }
 
   const handleRegister = async () => {
+    if (!email.trim() || !password) {
+      setMessage('Please enter both email and password')
+      return
+    }
     setLoading(true)
     setMessage('')
-    const { error } = await supabase.auth.signUp({ email, password })
+    const { error } = await supabase.auth.signUp({ email: email.trim(), password })
     setLoading(false)
     if (error) {
-      setMessage(error.message)
+      if (error.status === 400) {
+        setMessage('Unable to register with provided credentials')
+      } else {
+        setMessage(error.message)
+      }
     } else {
       navigate('/dashboard')
     }
