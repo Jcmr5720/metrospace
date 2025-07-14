@@ -1,47 +1,35 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import { ref } from 'vue'
+import LoginForm from './components/LoginForm.vue'
+import RegisterForm from './components/RegisterForm.vue'
+
+const page = ref('login')
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+  <div class="page-toggle">
+    <button :class="{ active: page === 'login' }" @click="page = 'login'">Login</button>
+    <button :class="{ active: page === 'register' }" @click="page = 'register'">Registro</button>
+  </div>
+  <LoginForm v-if="page === 'login'" />
+  <RegisterForm v-else />
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
+.page-toggle {
+  text-align: center;
+  margin-bottom: 2rem;
 }
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+.page-toggle button {
+  margin: 0 0.5rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  background: var(--color-background-soft);
+  cursor: pointer;
 }
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+.page-toggle .active {
+  background: hsl(160, 100%, 37%);
+  color: #fff;
 }
 </style>
