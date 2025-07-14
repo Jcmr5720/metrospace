@@ -26,12 +26,12 @@ async function login() {
     const token = randomToken()
     const session = {
       user_id: user.id,
-      session_token: token,
+      session_id: token,
       created_at: new Date().toISOString(),
       expires_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
     }
     await api('/sessions', { method: 'POST', body: JSON.stringify(session) })
-    localStorage.setItem('session_token', token)
+    localStorage.setItem('session_id', token)
     message.value = 'Sesión iniciada correctamente'
   } catch (e) {
     message.value = e.message
