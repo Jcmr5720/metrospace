@@ -1,0 +1,27 @@
+.dashboard {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: rgba(0,0,0,0.7);
+  color: #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.resources {
+  margin-bottom: 2rem;
+}
+
+.resource {
+  padding: 0.5rem;
+  border-bottom: 1px solid #444;
+}
+
+.logout {
+  padding: 0.5rem 1rem;
+  background: #ff3b3b;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+}
