@@ -8,12 +8,12 @@ async function loadData() {
   accountEl.textContent = 'Cargando...';
   list.innerHTML = '';
 
-  const { data: { session } } = await client.auth.getSession();
-  if (!session) {
+  const { data: { user } } = await client.auth.getUser();
+  if (!user) {
     window.location.href = '/login.html';
     return;
   }
-  const userId = session.user.id;
+  const userId = user.id;
   const { data: profile, error: profileError } = await client
     .from('public.users')
     .select('username')

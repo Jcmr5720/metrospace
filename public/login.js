@@ -1,6 +1,11 @@
-const SUPABASE_URL = 'https://YOUR_PROJECT.supabase.co';
-const SUPABASE_KEY = 'YOUR_SUPABASE_ANON_KEY';
+import { SUPABASE_URL, SUPABASE_KEY } from '../src/supabase.js';
 const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// Input elements
+const emailInput = document.getElementById('email');
+const passwordInput = document.getElementById('password');
+const loginButton = document.getElementById('loginButton');
+const messageDisplay = document.getElementById('messageDisplay');
 
 function setMessage(el, msg) {
   el.textContent = msg;
@@ -16,13 +21,13 @@ async function hashPassword(password) {
 
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
   e.preventDefault();
-  const email = document.getElementById('login-email').value;
-  const password = document.getElementById('login-password').value;
-  const msg = document.getElementById('login-message');
-  setMessage(msg, 'Cargando...');
-  const { data, error } = await client.auth.signInWithPassword({ email, password });
+  setMessage(messageDisplay, 'Cargando...');
+  const { data, error } = await client.auth.signInWithPassword({
+    email: emailInput.value,
+    password: passwordInput.value
+  });
   if (error || !data.user) {
-    setMessage(msg, error ? error.message : 'Error de autenticaci\u00f3n');
+    setMessage(messageDisplay, error ? error.message : 'Error de autenticaci\u00f3n');
     return;
   }
   window.location.href = '/dashboard.html';
