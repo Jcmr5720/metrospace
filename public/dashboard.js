@@ -1,9 +1,13 @@
-const SUPABASE_URL = 'https://bidklbjywxkxnotrtnps.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJpZGtsYmp5d3hreG5vdHJ0bnBzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA4MTgxMjAsImV4cCI6MjA2NjM5NDEyMH0.kDf2SnmRhvRhl_Hy6_ieFdf6L_qI5YJxt3RhrcKOUTc';
+import { SUPABASE_URL, SUPABASE_KEY } from '../src/supabase.js';
 
 const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 async function loadData() {
+  const accountEl = document.getElementById('account');
+  const list = document.getElementById('resources');
+  accountEl.textContent = 'Cargando...';
+  list.innerHTML = '';
+
   const { data: { session } } = await client.auth.getSession();
   if (!session) {
     window.location.href = '/login.html';
@@ -11,25 +15,25 @@ async function loadData() {
   }
   const userId = session.user.id;
   const { data: profile, error: profileError } = await client
-    .from('users')
+    .from('public.users')
     .select('username')
     .eq('supabase_auth_id', userId)
     .single();
   if (profileError) {
-    console.error(profileError);
+    accountEl.textContent = profileError.message;
     return;
   }
-  document.getElementById('account').textContent = profile.username;
+  accountEl.textContent = profile.username;
 
   const { data: resources, error: resourceError } = await client
-    .from('player_resources')
+    .from('public.player_resources')
     .select(
       'chrono_polvo, cristal_etereo, combustible_singularidad, nucleos_potencia, creditos_galacticos, sustancia_x'
     )
     .eq('player_id', userId)
     .single();
   if (resourceError) {
-    console.error(resourceError);
+    accountEl.textContent = resourceError.message;
     return;
   }
   const resourceNames = {
@@ -40,8 +44,6 @@ async function loadData() {
     creditos_galacticos: 'Créditos Galácticos',
     sustancia_x: 'Sustancia X'
   };
-  const list = document.getElementById('resources');
-  list.innerHTML = '';
   Object.keys(resourceNames).forEach((key) => {
     const li = document.createElement('li');
     li.textContent = `${resourceNames[key]}: ${resources[key]}`;

@@ -1,5 +1,9 @@
-const API_URL = 'https://bidklbjywxkxnotrtnps.supabase.co/rest/v1';
-const API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJpZGtsYmp5d3hreG5vdHJ0bnBzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA4MTgxMjAsImV4cCI6MjA2NjM5NDEyMH0.kDf2SnmRhvRhl_Hy6_ieFdf6L_qI5YJxt3RhrcKOUTc';
+export const SUPABASE_URL = 'https://bidklbjywxkxnotrtnps.supabase.co';
+export const SUPABASE_KEY =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJpZGtsYmp5d3hreG5vdHJ0bnBzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA4MTgxMjAsImV4cCI6MjA2NjM5NDEyMH0.kDf2SnmRhvRhl_Hy6_ieFdf6L_qI5YJxt3RhrcKOUTc';
+
+const API_URL = `${SUPABASE_URL}/rest/v1`;
+const API_KEY = SUPABASE_KEY;
 
 export async function api(path, options = {}) {
   options.headers = options.headers || {};
